@@ -5,8 +5,8 @@ import { ContactModel } from "../models/contact.js";
 export const getContacts = async (req, res,next) => {
   try {
   const allContacts = await ContactModel.find();
-  res.send(allContacts);
-  // res.json(allContacts);
+  // res.send(allContacts);
+  res.json(allContacts);
   } catch (error) {
      res.status(200).json(allContacts);
   }
