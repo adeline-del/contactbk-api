@@ -13,9 +13,19 @@ export const getContacts = async (req, res,next) => {
 };
 
 // Get a contact
-export const getContact = (req, res) => {
-  res.json(`Contact with id ${req.params.id} received`);
+export const getContact = async (req, res) => {
+  try {
+    const contact = await contact.findById(req.params.id);
+    if (!contact) {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
+    res.json(contact);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
+
+
 
 // Patch a contact
 export const patchContact = async (req, res, next) => {
@@ -53,16 +63,3 @@ export const deleteContact = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
-
-
-// Export DB
-export const dbConnection = async () => {
-
-  // DB error handling
-try {
-  await mongoose.connect(mongo_uri);
-  console.log("Database connected Sucessfully");
-} catch (error) {
-  console.log(error);
-}
-}
